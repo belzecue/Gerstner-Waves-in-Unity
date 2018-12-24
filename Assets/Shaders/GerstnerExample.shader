@@ -5,7 +5,7 @@ Shader "GerstnerExample"
 	Properties
 	{
 		_Strength("Strength", Range( 0 , 1)) = 1
-		[Gerstner()]_wave1("wave1", Vector) = (0,0,0,0)
+		_wave1("wave1", Vector) = (0,0,0,0)
 		_dir1("dir1", Vector) = (0,0,0,0)
 		_wave2("wave2", Vector) = (0,0,0,0)
 		_dir2("dir2", Vector) = (0,0,0,0)
