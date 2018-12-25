@@ -8,7 +8,7 @@ Material:
   m_PrefabInternal: {fileID: 0}
   m_Name: GerstnerExample
   m_Shader: {fileID: 4800000, guid: bac76f4da536ce14b954ab6e062f82b6, type: 3}
-  m_ShaderKeywords: 
+  m_ShaderKeywords: _DEPTH_ON _MODULATESTRENGTHBYDEPTH_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -17,15 +17,38 @@ Material:
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
-    m_TexEnvs: []
+    m_TexEnvs:
+    - _texcoord:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _Float0: -2
-    - _Strength: 1
+    - _Depth: 1
+    - _DepthMask: 0.95
+    - _DepthModulationStrength: 1
+    - _DepthMultiplier: 0.5
+    - _DepthOffset: -0.25
+    - _Float0: 4
+    - _Float1: 0.75
+    - _MainDepth: -5.55
+    - _ModulateStrengthByDepth: 1
+    - _SmallDepth: 0.58
+    - _SmallOffset: -3
+    - _Strength: 0.75
     - __dirty: 0
+    - _offset2: -3.2
+    - _sssmult: 0.01
     m_Colors:
+    - _Color0: {r: 0, g: 0.07849898, b: 0.2647059, a: 0}
+    - _Color1: {r: 0, g: 0.09254564, b: 0.1838235, a: 0}
+    - _Color2: {r: 0, g: 0.4191175, b: 0.4017747, a: 0}
+    - _SmallColor: {r: 0.132461, g: 0.367647, b: 0.192474, a: 0}
     - _dir1: {r: 1, g: 0.1, b: 0, a: 0}
     - _dir2: {r: 0.5, g: 0, b: 0, a: 0}
     - _dir3: {r: 0.3, g: 0.53, b: 0, a: 0}
+    - _max: {r: 1, g: 100, b: 0, a: 0}
+    - _min: {r: -1, g: -100, b: 0, a: 0}
+    - _sss: {r: 0.02941179, g: 1, b: 0.15659237, a: 0}
     - _wave1: {r: 0.1, g: 3.22, b: 2, a: 0}
     - _wave2: {r: 0.1, g: 5.15, b: -2.5, a: 0}
     - _wave3: {r: 0.1, g: 2.78, b: 1, a: 0}

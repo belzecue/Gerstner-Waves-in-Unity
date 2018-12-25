@@ -9,7 +9,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 78b2425a2284af743826c689403a4924, type: 3}
-  m_Name: GerstnerAmplify
+  m_Name: GerstnerWave
   m_EditorClassIdentifier: 
   m_functionInfo: "// Made with Amplify Shader Editor\n// Available at the Unity Asset
     Store - http://u3d.as/y3X \n/*ASEBEGIN\nVersion=16103\n400;92;1243;650;2301.518;-130.7132;1.585912;False;False\nNode;AmplifyShaderEditor.CommentaryNode;128;-997.4133,-214.1812;Float;False;1619.249;612.048;Object
