@@ -1,38 +1,38 @@
-﻿// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
-
-Shader "Gerstner/Example" {
+﻿Shader "Gerstner/Example" {
 	Properties {
 		[Header(General Settings)]
 		_Color ("Color", Color) = (1,1,1,1)
 		_Glossiness ("Smoothness", Range(0,1)) = 0.5
 
+		_combined ("Combined", int) = 1
+		_combined2 ("Combined2", int) = 1
+		_steepness("Steep", Range(0, 1)) = 0
+
+
+		/*
 		[Header(Global Wave Settings)]
 		_OffsetStrength ("Offset Strength", Range(0, 1)) = 1.0
 		_NormalStrength ("Normal Strength", Range(0, 1)) = 1.0
+		_Steepness("Steepness", Range(0, 1)) = 0.0
 
 		[Header(Wave 1)]
-		_Wave1Contribution("Contribution", Range(0, 1)) = 1.0
 		_Wave1Amplitude("Amplitude", float) = 1.0
 		_Wave1Wavelength("Wavelength", float) = 1.0
 		_Wave1Speed("Speed", float) = 1.0
-		_Wave1Steepness("Steepness", Range(0, 1)) = 0.0
 		_Wave1Direction("Direction", Vector) = (0, 1, 0, 0)
 
 		[Header(Wave 2)]
-		_Wave2Contribution("Contribution", Range(0, 1)) = 1.0
 		_Wave2Amplitude("Amplitude", float) = 1.0
 		_Wave2Wavelength("Wavelength", float) = 1.0
 		_Wave2Speed("Speed", float) = 1.0
-		_Wave2Steepness("Steepness", Range(0, 1)) = 0.0
 		_Wave2Direction("Direction", Vector) = (0, 1, 0, 0)
 
 		[Header(Wave 3)]
-		_Wave3Contribution("Contribution", Range(0, 1)) = 1.0
 		_Wave3Amplitude("Amplitude", float) = 1.0
 		_Wave3Wavelength("Wavelength", float) = 1.0
 		_Wave3Speed("Speed", float) = 1.0
-		_Wave3Steepness("Steepness", Range(0, 1)) = 0.0
 		_Wave3Direction("Direction", Vector) = (0, 1, 0, 0)
+		*/
 
 	}
 	SubShader {
@@ -55,31 +55,44 @@ Shader "Gerstner/Example" {
 		fixed4 _Color;
 		half _Glossiness;
 
-		fixed _OffsetStrength;
-		fixed _NormalStrength;
+		int _combined;
+		int _combined2;
 
-		fixed _Wave1Contribution;
-		half _Wave1Amplitude;
-		half _Wave1Wavelength;
-		half _Wave1Speed;
-		fixed _Wave1Steepness;
-		fixed2 _Wave1Direction;
-
-		fixed _Wave2Contribution;
-		half _Wave2Amplitude;
-		half _Wave2Wavelength;
-		half _Wave2Speed;
-		fixed _Wave2Steepness;
-		fixed2 _Wave2Direction;
-
-		fixed _Wave3Contribution;
-		half _Wave3Amplitude;
-		half _Wave3Wavelength;
-		half _Wave3Speed;
-		fixed _Wave3Steepness;
-		fixed2 _Wave3Direction;
+		float _offsetStrength;
+		float _normalStrength;
+		float _amplitude[10];
+		float _wavelength[10];
+		float _speed[10];
+		float _steepness;
+		float3 _direction[10];
+		float _numWaves;
 
 		void vert (inout appdata_full v) {
+
+			float3 worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
+			float3 offset = float3(0, 0, 0);
+			float3 norm = v.normal.xyz;
+
+			for (int i = 0; i < _numWaves; i++) {
+				GerstnerOffset(worldPos, _amplitude[i], _wavelength[i], _speed[i],
+							   _steepness, _direction[i], _numWaves, offset);
+			}
+
+			for (i = 0; i < _numWaves; i++) {
+				GerstnerNormal(worldPos, _amplitude[i], _wavelength[i], _speed[i],
+							   _steepness, _direction[i], _numWaves, offset, norm);
+			}
+
+			v.vertex.xyz = offset;  // lerp(offset, v.vertex.xyz, _offsetStrength);
+			v.normal.xyz = norm;  // lerp(normal, v.normal, _normalStrength);
+
+
+			/*
+			float3 position, float amplitude[10], float wavelength[10], float speed[10],
+				  float steepness, float3 direction[10], int numWaves, out float3 offset, out float3 normal) {
+			*/
+
+      		/*
       		float3 worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
 			half numWaves = _Wave1Contribution + _Wave2Contribution + _Wave3Contribution;
 
@@ -99,6 +112,7 @@ Shader "Gerstner/Example" {
       		vNorm2 = lerp(v.normal, vNorm2, _Wave2Contribution);
       		vNorm3 = lerp(v.normal, vNorm3, _Wave3Contribution);
       		v.normal += lerp(v.normal, normalize((vNorm1 + vNorm2 + vNorm3) / half3(1, numWaves, 1)), _NormalStrength);
+      		*/
       	}
 
 		void surf (Input IN, inout SurfaceOutputStandard o) {

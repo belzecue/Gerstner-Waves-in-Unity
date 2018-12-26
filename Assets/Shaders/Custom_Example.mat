@@ -23,6 +23,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
+    - _Combined: 1
     - _Glossiness: 0
     - _Metallic: 0
     - _NormalStrength: 1
@@ -43,6 +44,9 @@ Material:
     - _Wave3Speed: 1
     - _Wave3Steepness: 0
     - _Wave3Wavelength: 2.51
+    - _combined: 1
+    - _combined2: 1
+    - _steepness: 1
     m_Colors:
     - _Color: {r: 0.47794116, g: 0.47794116, b: 0.47794116, a: 1}
     - _Wave1Direction: {r: 0, g: 1, b: 0, a: 0}
