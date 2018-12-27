@@ -4,12 +4,6 @@
 		_Color ("Color", Color) = (1,1,1,1)
 		_Glossiness ("Smoothness", Range(0,1)) = 0.5
 
-		_combined ("Combined", int) = 1
-		_combined2 ("Combined2", int) = 1
-		_steepness("Steep", Range(0, 1)) = 0
-
-
-		/*
 		[Header(Global Wave Settings)]
 		_OffsetStrength ("Offset Strength", Range(0, 1)) = 1.0
 		_NormalStrength ("Normal Strength", Range(0, 1)) = 1.0
@@ -30,9 +24,8 @@
 		[Header(Wave 3)]
 		_Wave3Amplitude("Amplitude", float) = 1.0
 		_Wave3Wavelength("Wavelength", float) = 1.0
-		_Wave3Speed("Speed", float) = 1.0
+		_Wave3Speed("Speed", float) = 1.0 
 		_Wave3Direction("Direction", Vector) = (0, 1, 0, 0)
-		*/
 
 	}
 	SubShader {
@@ -55,64 +48,79 @@
 		fixed4 _Color;
 		half _Glossiness;
 
-		int _combined;
-		int _combined2;
+		float _OffsetStrength;
+		float _NormalStrength;
+		float _Steepness;
 
-		float _offsetStrength;
-		float _normalStrength;
-		float _amplitude[10];
-		float _wavelength[10];
-		float _speed[10];
-		float _steepness;
-		float3 _direction[10];
-		float _numWaves;
+		float _Wave1Amplitude;
+		float _Wave1Wavelength;
+		float _Wave1Speed;
+		float3 _Wave1Direction;
+
+		float _Wave2Amplitude;
+		float _Wave2Wavelength;
+		float _Wave2Speed;
+		float3 _Wave2Direction;
+
+		float _Wave3Amplitude;
+		float _Wave3Wavelength;
+		float _Wave3Speed;
+		float3 _Wave3Direction;
 
 		void vert (inout appdata_full v) {
+			GerstnerGlobalProperties g;
+			
+			g.worldPosition = mul(unity_ObjectToWorld, v.vertex).xyz;
+			g.steepness = _Steepness;
+			g.numWaves = 3.0;
+			g.offsetStrength = _OffsetStrength;
+			g.offset = float3(0, 0, 0);
+			g.normalStrength = _NormalStrength;
+			g.normal = v.normal.xyz;
 
+			GerstnerWaveProperties w1, w2, w3;
+
+			w1.amplitude = _Wave1Amplitude;
+			w1.wavelength = _Wave1Wavelength;
+			w1.speed = _Wave1Speed;
+			w1.direction = _Wave1Direction;
+
+			w2.amplitude = _Wave2Amplitude;
+			w2.wavelength = _Wave2Wavelength;
+			w2.speed = _Wave2Speed;
+			w2.direction = _Wave2Direction;
+
+			w3.amplitude = _Wave3Amplitude;
+			w3.wavelength = _Wave3Wavelength;
+			w3.speed = _Wave3Speed;
+			w3.direction = _Wave3Direction;
+
+			GerstnerOffset(g, w1);
+			GerstnerOffset(g, w2);
+			GerstnerOffset(g, w3);
+			GerstnerNormal(g, w1);
+			GerstnerNormal(g, w2);
+			GerstnerNormal(g, w3);
+
+			v.vertex.xyz = lerp(v.vertex.xyz, g.offset, g.offsetStrength);
+			v.normal.xyz = normalize(lerp(v.normal.xyz, g.normal, g.normalStrength));
+
+			/*
 			float3 worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
 			float3 offset = float3(0, 0, 0);
 			float3 norm = v.normal.xyz;
 
-			for (int i = 0; i < _numWaves; i++) {
-				GerstnerOffset(worldPos, _amplitude[i], _wavelength[i], _speed[i],
-							   _steepness, _direction[i], _numWaves, offset);
-			}
+			GerstnerOffset(worldPos, _Wave1Amplitude, _Wave1Wavelength, _Wave1Speed, _Steepness, _Wave1Direction, 3.0, offset);
+			GerstnerOffset(worldPos, _Wave2Amplitude, _Wave2Wavelength, _Wave2Speed, _Steepness, _Wave2Direction, 3.0, offset);
+			GerstnerOffset(worldPos, _Wave3Amplitude, _Wave3Wavelength, _Wave3Speed, _Steepness, _Wave3Direction, 3.0, offset);
 
-			for (i = 0; i < _numWaves; i++) {
-				GerstnerNormal(worldPos, _amplitude[i], _wavelength[i], _speed[i],
-							   _steepness, _direction[i], _numWaves, offset, norm);
-			}
+			GerstnerNormal(worldPos, _Wave1Amplitude, _Wave1Wavelength, _Wave1Speed, _Steepness, _Wave1Direction, 3.0, offset, norm);
+			GerstnerNormal(worldPos, _Wave2Amplitude, _Wave2Wavelength, _Wave2Speed, _Steepness, _Wave2Direction, 3.0, offset, norm);
+			GerstnerNormal(worldPos, _Wave3Amplitude, _Wave3Wavelength, _Wave3Speed, _Steepness, _Wave3Direction, 3.0, offset, norm);
 
-			v.vertex.xyz = offset;  // lerp(offset, v.vertex.xyz, _offsetStrength);
-			v.normal.xyz = norm;  // lerp(normal, v.normal, _normalStrength);
-
-
-			/*
-			float3 position, float amplitude[10], float wavelength[10], float speed[10],
-				  float steepness, float3 direction[10], int numWaves, out float3 offset, out float3 normal) {
+			v.vertex.xyz = lerp(v.vertex.xyz, offset, _OffsetStrength);
+			v.normal.xyz = normalize(lerp(v.normal, norm, _NormalStrength));
 			*/
-
-      		/*
-      		float3 worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
-			half numWaves = _Wave1Contribution + _Wave2Contribution + _Wave3Contribution;
-
-      		half3 vOff1, vOff2, vOff3;
-      		half3 vNorm1, vNorm2, vNorm3;
-
-      		GerstnerWave(worldPos.xz, _Wave1Amplitude, _Wave1Wavelength, _Wave1Speed, _Wave1Steepness, numWaves, _Wave1Direction, vOff1, vNorm1);
-      		GerstnerWave(worldPos.xz, _Wave2Amplitude, _Wave2Wavelength, _Wave2Speed, _Wave2Steepness, numWaves, _Wave2Direction, vOff2, vNorm2);
-      		GerstnerWave(worldPos.xz, _Wave3Amplitude, _Wave3Wavelength, _Wave3Speed, _Wave3Steepness, numWaves, _Wave3Direction, vOff3, vNorm3);
-
-      		vOff1 = lerp(half3(0, 0, 0), vOff1, _Wave1Contribution);
-      		vOff2 = lerp(half3(0, 0, 0), vOff2, _Wave2Contribution);
-      		vOff3 = lerp(half3(0, 0, 0), vOff3, _Wave3Contribution);
-      		v.vertex.xyz += lerp(half3(0, 0, 0), vOff1 + vOff2 + vOff3, _OffsetStrength);
-
-      		vNorm1 = lerp(v.normal, vNorm1, _Wave1Contribution);
-      		vNorm2 = lerp(v.normal, vNorm2, _Wave2Contribution);
-      		vNorm3 = lerp(v.normal, vNorm3, _Wave3Contribution);
-      		v.normal += lerp(v.normal, normalize((vNorm1 + vNorm2 + vNorm3) / half3(1, numWaves, 1)), _NormalStrength);
-      		*/
       	}
 
 		void surf (Input IN, inout SurfaceOutputStandard o) {
