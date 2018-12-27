@@ -8,7 +8,7 @@ Material:
   m_PrefabInternal: {fileID: 0}
   m_Name: Custom_Example
   m_Shader: {fileID: 4800000, guid: 27426e59af38fcf4b930496e2af73619, type: 3}
-  m_ShaderKeywords: 
+  m_ShaderKeywords: _TOGGLE_ON _USEWAVE1_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -24,27 +24,31 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _Combined: 1
-    - _Glossiness: 1
+    - _Glossiness: 0
     - _Metallic: 0
     - _NormalStrength: 1
     - _OffsetStrength: 1
     - _Speed: 1
     - _Steepness: 1
-    - _Wave1Amplitude: 1
+    - _Toggle: 1
+    - _UseWave1: 1
+    - _UseWave2: 0
+    - _UseWave3: 0
+    - _Wave1Amplitude: 0.94
     - _Wave1Contribution: 1
     - _Wave1Speed: 1
     - _Wave1Steepness: 0
-    - _Wave1Wavelength: 5
+    - _Wave1Wavelength: 11.843455
     - _Wave2Amplitude: 0.27
     - _Wave2Contribution: 1
     - _Wave2Speed: -0.25
     - _Wave2Steepness: 0
-    - _Wave2Wavelength: 2
-    - _Wave3Amplitude: 0.23
+    - _Wave2Wavelength: 14.482315
+    - _Wave3Amplitude: 0.5
     - _Wave3Contribution: 1
     - _Wave3Speed: 1
     - _Wave3Steepness: 0
-    - _Wave3Wavelength: 5
+    - _Wave3Wavelength: 3.1415
     - _combined: 1
     - _combined2: 1
     - _steepness: 1
@@ -52,4 +56,4 @@ Material:
     - _Color: {r: 0.52205884, g: 0.52205884, b: 0.52205884, a: 1}
     - _Wave1Direction: {r: 0.84, g: 0, b: 3.31, a: 0}
     - _Wave2Direction: {r: 0.69, g: 0, b: -1.6, a: 0}
-    - _Wave3Direction: {r: 13.47, g: 0, b: 4.81, a: 0}
+    - _Wave3Direction: {r: -3.55, g: -3.49, b: 4.81, a: 0}
