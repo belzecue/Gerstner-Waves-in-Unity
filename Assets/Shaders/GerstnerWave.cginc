@@ -8,8 +8,9 @@ void GerstnerOffset(float3 worldPos, float amplitude, float wavelength, float sp
 	float phi = speed * w;
 	float q = steepness / (amplitude * w * numWaves);
 
-	offset.xz += (worldPos.xz / numWaves) + q*amplitude * direction.xz * cos(dot(w * direction.xz, worldPos.xz) + phi*TIME);
+	offset.x += /*(worldPos.x / numWaves)*/ + q*amplitude * direction.x * cos(dot(w * direction.xz, worldPos.xz) + phi*TIME);
 	offset.y += amplitude * sin(dot(w * direction.xz, worldPos.xz) + phi*TIME);
+	offset.z += /*(worldPos.z / numWaves)*/ + q*amplitude * direction.z * cos(dot(w * direction.xz, worldPos.xz) + phi*TIME);
 }
 
 void GerstnerNormal(float3 worldPos, float amplitude, float wavelength, float speed,
@@ -19,6 +20,7 @@ void GerstnerNormal(float3 worldPos, float amplitude, float wavelength, float sp
 	float phi = speed * w;
 	float q = steepness / (amplitude * w * numWaves);
 
-	normal.xz -= (direction.xz * w*amplitude * cos(w * dot(direction.xz, offset.xz) + phi*TIME));
-	normal.y += ((1.0/numWaves) - (q * w*amplitude * sin(w * dot(direction.xz, offset.xz) + phi*TIME)));
+	normal.x /*-=*/ += (direction.x * w*amplitude * cos(w * dot(direction.xz, offset.xz) + phi*TIME));
+	normal.y /*+= ((1.0/numWaves) - */ += ((q * w*amplitude * sin(w * dot(direction.xz, offset.xz) + phi*TIME)));
+	normal.z /*-=*/ += (direction.z * w*amplitude * cos(w * dot(direction.xz, offset.xz) + phi*TIME));
 }

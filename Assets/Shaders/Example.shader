@@ -8,6 +8,7 @@
 		_OffsetStrength ("Offset Strength", Range(0, 1)) = 1.0
 		_NormalStrength ("Normal Strength", Range(0, 1)) = 1.0
 		_Steepness("Steepness", Range(0, 1)) = 0.0
+		_OffsetTest("Offset Test", Vector) = (0, 0, 0)
 
 		[Header(Enable(d) Waves)]
 		[Toggle]
@@ -37,7 +38,7 @@
 
 	}
 	SubShader {
-		Tags { "RenderType"="Opaque" }
+		Tags { "RenderType"="Opaque" "DisableBatching"="True"}
 		LOD 200
 
 		CGPROGRAM
@@ -52,6 +53,8 @@
 
 		struct Input {
 			float2 uv_MainTex;
+			float3 worldPos;
+			float4 objectPos;
 		};
 
 		fixed4 _Color;
@@ -60,6 +63,8 @@
 		float _OffsetStrength;
 		float _NormalStrength;
 		float _Steepness;
+
+		float3 _OffsetTest;
 
 		int _UseWave1, _UseWave2, _UseWave3;
 
@@ -88,6 +93,24 @@
 			if (_UseWave3 == 1)
 				numWaves++;
 
+			/*
+			float3 worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
+
+			//worldPos.y += worldPos.x;
+
+			worldPos = mul(unity_WorldToObject, worldPos);
+
+			v.vertex.xyz = lerp(v.vertex.xyz, worldPos.xyz, _OffsetStrength);
+			
+
+			float3 worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
+			worldPos.y += worldPos.x * worldPos.z / 5.0;
+
+			float2 newXZ = mul(unity_WorldToObject, worldPos.xz);
+			worldPos.xz = v.vertex.xz + worldPos.xz;
+			v.vertex.xyz = lerp(v.vertex.xyz, worldPos + (_OffsetTest*worldPos), _OffsetStrength);  // mul(unity_WorldToObject, worldPos).xyz;
+			*/
+
 			float3 worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
 			float3 offset = float3(0, 0, 0);
 			float3 norm = float3(0, 0, 0);  // v.normal.xyz; ????
@@ -102,20 +125,23 @@
 
 			// get the normal vector (requires the offset vector)
 			if (_UseWave1 == 1)
-				GerstnerNormal(worldPos, _Wave1Amplitude, _Wave1Wavelength, _Wave1Speed, _Steepness, _Wave1Direction, numWaves, offset, norm);
+				GerstnerNormal(worldPos, _Wave1Amplitude, _Wave1Wavelength, _Wave1Speed, _Steepness, _Wave1Direction, numWaves, offset + worldPos, norm);
 			if (_UseWave2 == 1)
-				GerstnerNormal(worldPos, _Wave2Amplitude, _Wave2Wavelength, _Wave2Speed, _Steepness, _Wave2Direction, numWaves, offset, norm);
+				GerstnerNormal(worldPos, _Wave2Amplitude, _Wave2Wavelength, _Wave2Speed, _Steepness, _Wave2Direction, numWaves, offset + worldPos, norm);
 			if (_UseWave3 == 1)
-				GerstnerNormal(worldPos, _Wave3Amplitude, _Wave3Wavelength, _Wave3Speed, _Steepness, _Wave3Direction, numWaves, offset, norm);
+				GerstnerNormal(worldPos, _Wave3Amplitude, _Wave3Wavelength, _Wave3Speed, _Steepness, _Wave3Direction, numWaves, offset + worldPos, norm);
 
-			//offset = mul(unity_WorldToObject, offset);
+			offset += v.vertex.xyz;
+
+			norm *= float3(-1, 1, -1);
+			norm.y = 1.0 - norm.y;
 
 			v.vertex.xyz = lerp(v.vertex.xyz, offset, _OffsetStrength);
 			v.normal.xyz = normalize(lerp(v.normal, norm, _NormalStrength));
       	}
 
 		void surf (Input IN, inout SurfaceOutputStandard o) {
-			o.Albedo = _Color.rgb;
+			o.Albedo = _Color.rgb;  // IN.worldPos.xyz;
 			o.Alpha = _Color.a;
 			o.Metallic = 0.0;
 			o.Smoothness = _Glossiness;
