@@ -31,7 +31,7 @@ and the accompanying normal by the following equation.<sup>[3]</sup>
 ![n eq](https://developer.nvidia.com/sites/all/modules/custom/gpugems/books/GPUGems/elementLinks/013equ04.jpg)
 
 
-a name="usage"></a>
+<a name="usage"></a>
 ## Usage
 
 To use the equations, simply `#include "../path/to/Gerstner.cginc"` in your `.shader` file.
@@ -42,7 +42,7 @@ The included [Example.shader](https://github.com/danielshervheim/Gerstner-Waves-
 
 In short, the following structs need to be filled, then passed:
 
-#### GerstnerGlobal [1]
+### GerstnerGlobal
 
 **offsetStrength [0...1]**: 0 "turns off" the calculated vertex offset, while 1 applies the full vertex offset.
 
@@ -52,7 +52,7 @@ In short, the following structs need to be filled, then passed:
 
 **numWaves [1...10]**: the number of waves filled out in the `GerstnerWave[]` array.
 	
-#### GerstnerWave [1...10]
+### GerstnerWave
 
 **enabled [0, 1]**: 0 disabled the wave, 1 enables it.
 
@@ -65,7 +65,7 @@ In short, the following structs need to be filled, then passed:
 **dir**: a unit vector whose X and Z components describe the direction in which the wave is travelling.
 
 
-a name="implementation"></a>
+<a name="implementation"></a>
 ## Implementation
 
 These equations are implemented in the `Gerstner.cginc` file as a series of functions.
@@ -75,7 +75,7 @@ The main function `Gerstner()` takes in the current vertex and normal vector, su
 The `GerstnerPositionSum()` function calculates the summed portion of the position equation, while the `GerstnerNormalSum()` function calculates the summed portion of the normal equation.
 
 
-a name="notes"></a>
+<a name="notes"></a>
 ## Notes
 
 #### Coordinate System
@@ -109,7 +109,7 @@ Unity shaders do not allow dynamically sized arrays, so I have capped the maximu
 Although 10 waves should certainly be enough to observe realistic ocean-like movements, with the right combination of parameters.
 
 
-a name="sources"></a>
+<a name="sources"></a>
 ## Sources
 
 [1] https://media.giphy.com/media/3ohzdDmwsUNS6E8fy8/giphy.gif
