@@ -8,7 +8,7 @@ Material:
   m_PrefabInternal: {fileID: 0}
   m_Name: ExampleMaterial
   m_Shader: {fileID: 4800000, guid: 80b65329807580f4ab25864737777ebe, type: 3}
-  m_ShaderKeywords: _USEWAVE1_ON _USEWAVE2_ON _USEWAVE3_ON
+  m_ShaderKeywords: _USEWAVE1_ON _USEWAVE2_ON _USEWAVE3_ON _WAVE2ENABLED_ON _WAVE3ENABLED_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -28,17 +28,20 @@ Material:
     - _UseWave2: 1
     - _UseWave3: 1
     - _Wave1Amplitude: 0.5
-    - _Wave1Speed: 2
-    - _Wave1Wavelength: 10
+    - _Wave1Enabled: 1
+    - _Wave1Speed: 5
+    - _Wave1Wavelength: 6.55
     - _Wave2Amplitude: 0.5
-    - _Wave2Speed: 0.5
+    - _Wave2Enabled: 1
+    - _Wave2Speed: -2
     - _Wave2Wavelength: 5.7
-    - _Wave3Amplitude: 0.42
-    - _Wave3Speed: -0.75
+    - _Wave3Amplitude: 0.4
+    - _Wave3Enabled: 1
+    - _Wave3Speed: 2
     - _Wave3Wavelength: 5.06
     m_Colors:
     - _Color: {r: 0.61764705, g: 0.61764705, b: 0.61764705, a: 1}
     - _Tmp: {r: 1, g: 1, b: 16.82, a: 1}
-    - _Wave1Direction: {r: 1, g: 0, b: 0.78, a: 0}
-    - _Wave2Direction: {r: -0.17, g: 0, b: -0.43, a: 0}
-    - _Wave3Direction: {r: 0.92, g: 0, b: 1, a: 0}
+    - _Wave1Direction: {r: 2.5, g: 0, b: 0.78, a: 0}
+    - _Wave2Direction: {r: -0.17, g: 0, b: -0.28, a: 0}
+    - _Wave3Direction: {r: 1.07, g: 0, b: 1, a: 0}
